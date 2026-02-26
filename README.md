@@ -55,7 +55,3 @@ Phase    { id, projectId, name, description, order }
 Task     { id, phaseId, projectId, title, description, status, priority,
            assignee, dueDate, tags[], references[], createdAt, updatedAt }
 ```
-
-## Adding to Claude.ai
-
-Since it uses `window.storage`, it works natively as a persistent Claude.ai artifact when you paste the JSX files together. For standalone use, it falls back to `localStorage`.
