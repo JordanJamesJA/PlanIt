@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Input / Textarea
  *
@@ -14,14 +16,14 @@ export function Input({
   hint,
   error,
   multiline = false,
-  rows      = 3,
+  rows = 3,
   prefix,
   suffix,
   value,
   onChange,
   placeholder,
-  type      = 'text',
-  disabled  = false,
+  type = 'text',
+  disabled = false,
   autoFocus = false,
   style,
   inputStyle,
@@ -30,116 +32,85 @@ export function Input({
   maxLength,
 }) {
   const borderColor = error ? 'var(--danger)' : 'var(--border-mid)';
-  const focusColor  = error ? 'var(--danger)' : 'var(--accent)';
+  const focusColor = error ? 'var(--danger)' : 'var(--accent)';
 
   const baseInput = {
-    width:      '100%',
+    width: '100%',
     background: 'var(--surface)',
-    border:     `1px solid ${borderColor}`,
+    border: `1px solid ${borderColor}`,
     borderRadius: 'var(--r-md)',
-    color:      'var(--text)',
-    fontFamily: 'var(--font-body)',
-    fontSize:   13,
-    padding:    prefix || suffix ? '7px 10px 7px 0' : '7px 10px',
-    outline:    'none',
-    transition: `border-color var(--ease)`,
-    resize:     multiline ? 'vertical' : undefined,
-    lineHeight:  1.5,
+    color: 'var(--text)',
+    fontSize: 13,
+    padding: prefix || suffix ? '7px 10px 7px 0' : '7px 10px',
+    outline: 'none',
+    transition: 'border-color var(--ease)',
+    resize: multiline ? 'vertical' : undefined,
+    lineHeight: 1.5,
     ...inputStyle,
   };
 
+  const sharedProps = {
+    id,
+    name,
+    value,
+    onChange,
+    placeholder,
+    disabled,
+    autoFocus,
+    maxLength,
+    style: baseInput,
+    className: 'font-[var(--font-body)]',
+    onFocus: e => (e.target.style.borderColor = focusColor),
+    onBlur: e => (e.target.style.borderColor = borderColor),
+  };
+
   const elem = multiline ? (
-    <textarea
-      id={id}
-      name={name}
-      rows={rows}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      autoFocus={autoFocus}
-      maxLength={maxLength}
-      style={baseInput}
-      onFocus={e => (e.target.style.borderColor = focusColor)}
-      onBlur={e  => (e.target.style.borderColor = borderColor)}
-    />
+    <textarea {...sharedProps} rows={rows} />
   ) : (
-    <input
-      id={id}
-      name={name}
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      autoFocus={autoFocus}
-      maxLength={maxLength}
-      style={baseInput}
-      onFocus={e => (e.target.style.borderColor = focusColor)}
-      onBlur={e  => (e.target.style.borderColor = borderColor)}
-    />
+    <input {...sharedProps} type={type} />
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 5, ...style }}>
+    <div className="flex flex-col gap-[5px]" style={style}>
       {label && (
-        <label htmlFor={id} style={{
-          fontSize: 12, fontWeight: 500,
-          color: 'var(--text-2)', letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-        }}>
+        <label
+          htmlFor={id}
+          className="text-[12px] font-medium uppercase tracking-[0.04em] text-[var(--text-2)]"
+        >
           {label}
         </label>
       )}
 
       {prefix || suffix ? (
-        <div style={{
-          display: 'flex', alignItems: 'center',
-          background: 'var(--surface)',
-          border: `1px solid ${borderColor}`,
-          borderRadius: 'var(--r-md)',
-          overflow: 'hidden',
-        }}>
-          {prefix && (
-            <span style={{ padding: '0 10px', color: 'var(--text-3)', flexShrink: 0 }}>
-              {prefix}
-            </span>
-          )}
+        <div
+          className="flex items-center overflow-hidden rounded-[var(--r-md)] bg-[var(--surface)]"
+          style={{ border: `1px solid ${borderColor}` }}
+        >
+          {prefix && <span className="shrink-0 px-[10px] text-[var(--text-3)]">{prefix}</span>}
           {React.cloneElement(elem, {
             style: { ...baseInput, border: 'none', borderRadius: 0, flex: 1 },
           })}
-          {suffix && (
-            <span style={{ padding: '0 10px', color: 'var(--text-3)', flexShrink: 0 }}>
-              {suffix}
-            </span>
-          )}
+          {suffix && <span className="shrink-0 px-[10px] text-[var(--text-3)]">{suffix}</span>}
         </div>
       ) : elem}
 
-      {hint && !error && (
-        <span style={{ fontSize: 11, color: 'var(--text-3)' }}>{hint}</span>
-      )}
-      {error && (
-        <span style={{ fontSize: 11, color: 'var(--danger)' }}>{error}</span>
-      )}
+      {hint && !error && <span className="text-[11px] text-[var(--text-3)]">{hint}</span>}
+      {error && <span className="text-[11px] text-[var(--danger)]">{error}</span>}
     </div>
   );
 }
-
-// ─── SELECT ───────────────────────────────────────────────────────────────────
 
 /**
  * Native <select> wrapper, styled to match Input.
  */
 export function Select({ label, value, onChange, options = [], style, id, disabled }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 5, ...style }}>
+    <div className="flex flex-col gap-[5px]" style={style}>
       {label && (
-        <label htmlFor={id} style={{
-          fontSize: 12, fontWeight: 500,
-          color: 'var(--text-2)', letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-        }}>
+        <label
+          htmlFor={id}
+          className="text-[12px] font-medium uppercase tracking-[0.04em] text-[var(--text-2)]"
+        >
           {label}
         </label>
       )}
@@ -148,30 +119,20 @@ export function Select({ label, value, onChange, options = [], style, id, disabl
         value={value}
         onChange={onChange}
         disabled={disabled}
+        className="cursor-pointer appearance-none rounded-[var(--r-md)] border border-[var(--border-mid)] bg-[var(--surface)] bg-no-repeat pr-7 font-[var(--font-body)] text-[13px] text-[var(--text)] outline-none"
         style={{
-          background:   'var(--surface)',
-          border:       '1px solid var(--border-mid)',
-          borderRadius: 'var(--r-md)',
-          color:        'var(--text)',
-          fontFamily:   'var(--font-body)',
-          fontSize:     13,
-          padding:      '7px 10px',
-          outline:      'none',
-          cursor:       'pointer',
-          appearance:   'none',
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239090a8'/%3E%3C/svg%3E")`,
-          backgroundRepeat:   'no-repeat',
+          padding: '7px 10px',
+          backgroundImage:
+            'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\'%3E%3Cpath d=\'M0 0l5 6 5-6z\' fill=\'%239090a8\'/%3E%3C/svg%3E")',
           backgroundPosition: 'right 10px center',
-          paddingRight:       28,
         }}
       >
         {options.map(opt => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
         ))}
       </select>
     </div>
   );
 }
-
-// Need React for cloneElement
-import React from 'react';

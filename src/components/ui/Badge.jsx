@@ -12,39 +12,32 @@ export function Badge({
   variant,
   color,
   bg,
-  size    = 'sm',
-  dot     = false,
+  size = 'sm',
+  dot = false,
   style,
 }) {
-  const sz = size === 'md'
+  const sizeStyle = size === 'md'
     ? { fontSize: 12, padding: '3px 8px', height: 22 }
     : { fontSize: 11, padding: '2px 7px', height: 19 };
 
   const resolvedColor = color ?? 'var(--text-2)';
-  const resolvedBg    = bg    ?? 'var(--overlay)';
+  const resolvedBg = bg ?? 'var(--overlay)';
 
   return (
-    <span style={{
-      display:        'inline-flex',
-      alignItems:     'center',
-      gap:            4,
-      borderRadius:   'var(--r-sm)',
-      fontFamily:     'var(--font-mono)',
-      fontWeight:     500,
-      letterSpacing:  '0.02em',
-      whiteSpace:     'nowrap',
-      color:          resolvedColor,
-      background:     resolvedBg,
-      ...sz,
-      ...style,
-    }}>
+    <span
+      className="inline-flex items-center gap-1 whitespace-nowrap rounded-[var(--r-sm)] font-[var(--font-mono)] font-medium tracking-[0.02em]"
+      style={{
+        color: resolvedColor,
+        background: resolvedBg,
+        ...sizeStyle,
+        ...style,
+      }}
+    >
       {dot && (
-        <span style={{
-          width: 5, height: 5,
-          borderRadius: '50%',
-          background: resolvedColor,
-          flexShrink: 0,
-        }} />
+        <span
+          className="size-[5px] shrink-0 rounded-full"
+          style={{ background: resolvedColor }}
+        />
       )}
       {children}
     </span>
