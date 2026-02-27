@@ -2,20 +2,15 @@ import { Sidebar } from './Sidebar';
 import { Board }    from '@/components/board/Board';
 import { useAppStore } from '@/hooks/useAppStore';
 
-/**
- * AppLayout
- * Root layout: sidebar on left, board on right.
- */
+
 export function AppLayout() {
   const { activeProject, saving, state } = useAppStore();
 
   return (
     <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
 
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main */}
       <main style={{
         flex:     1,
         display:  'flex',
@@ -23,7 +18,6 @@ export function AppLayout() {
         overflow: 'hidden',
         position: 'relative',
       }}>
-        {/* Top bar (saving indicator + breadcrumb) */}
         <div style={{
           height:       'var(--topbar-h)',
           borderBottom: '1px solid var(--border)',
@@ -44,7 +38,6 @@ export function AppLayout() {
 
           <div style={{ flex: 1 }} />
 
-          {/* Saving indicator */}
           {saving && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
               <span className="animate-spin" style={{ color: 'var(--accent)', fontSize: 12 }}>◌</span>
@@ -54,13 +47,11 @@ export function AppLayout() {
             </div>
           )}
 
-          {/* Keyboard shortcut hint */}
           <div style={{ fontSize: 11, color: 'var(--text-3)', fontFamily: 'var(--font-mono)' }}>
             {state.projects.length} project{state.projects.length !== 1 ? 's' : ''}
           </div>
         </div>
 
-        {/* Content area */}
         <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           {activeProject ? (
             <Board />
@@ -73,7 +64,6 @@ export function AppLayout() {
   );
 }
 
-// ─── WELCOME SCREEN ───────────────────────────────────────────────────────────
 
 function WelcomeScreen() {
   return (

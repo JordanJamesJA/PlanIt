@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/Button";
 
 export function AuthModal({ open, onClose, onAuthed }) {
-  const [mode, setMode] = useState("signin"); // signin | signup
+  const [mode, setMode] = useState("signin"); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
@@ -97,7 +97,6 @@ export function AuthModal({ open, onClose, onAuthed }) {
           </button>
         </div>
 
-        {/* Tabs */}
         <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
           <button
             onClick={() => setMode("signin")}
@@ -115,7 +114,6 @@ export function AuthModal({ open, onClose, onAuthed }) {
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, marginTop: 14 }}>
           <label style={labelStyle}>
             Email

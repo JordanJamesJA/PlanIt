@@ -5,10 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/hooks/useAppStore";
 import { AuthButton } from "@/components/auth/AuthButton";
 
-/**
- * Sidebar
- * Shows project list, create/edit project modals, active project indicator.
- */
 export function Sidebar() {
   const {
     state,
@@ -54,7 +50,6 @@ export function Sidebar() {
           zIndex: 10,
         }}
       >
-        {/* ── Logo / Collapse row ──────────────────────────────────── */}
         <div
           style={{
             display: "flex",
@@ -108,7 +103,6 @@ export function Sidebar() {
 
         {!collapsed && (
           <>
-            {/* ── Projects section ──────────────────────────────────── */}
             <div
               style={{
                 flex: 1,
@@ -162,7 +156,6 @@ export function Sidebar() {
               )}
             </div>
 
-            {/* ── Footer: new project ───────────────────────────────── */}
             <div
               style={{
                 padding: "10px",
@@ -170,7 +163,9 @@ export function Sidebar() {
                 flexShrink: 0,
               }}
             >
-              <AuthButton />
+              <div style={{ marginBottom: 8}}>
+                <AuthButton />
+              </div>
 
               <Button
                 variant="outline"
@@ -178,6 +173,7 @@ export function Sidebar() {
                 fullWidth
                 icon="+"
                 onClick={() => setCreateModal(true)}
+                style={{ cursor: "pointer" }}
               >
                 New Project
               </Button>
@@ -185,7 +181,6 @@ export function Sidebar() {
           </>
         )}
 
-        {/* Collapsed mini icons */}
         {collapsed && (
           <div
             style={{
@@ -254,7 +249,6 @@ export function Sidebar() {
         )}
       </aside>
 
-      {/* ── Modals ──────────────────────────────────────────────── */}
       {createModal && (
         <ProjectModal
           onSave={handleSaveProject}

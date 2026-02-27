@@ -25,7 +25,6 @@ export function AuthButton({ compact = false }) {
     await supabase.auth.signOut();
   }
 
-  // Compact = collapsed sidebar icon button
   if (compact) {
     const initial = session?.user?.email?.[0]?.toUpperCase() ?? "↪";
     return (
@@ -50,7 +49,7 @@ export function AuthButton({ compact = false }) {
           onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-3)")}
         >
-            {initial}
+          {initial}
         </button>
 
         <AuthModal open={open} onClose={() => setOpen(false)} />
@@ -65,7 +64,7 @@ export function AuthButton({ compact = false }) {
           <span style={{ fontSize: 11, color: "var(--text-3)" }}>
             {session.user.email}
           </span>
-          <Button size="sm" variant="outline" onClick={handleSignOut}>
+          <Button size="sm" variant="outline" onClick={handleSignOut} style={{ cursor: "pointer" }}>
             Sign out
           </Button>
         </div>
@@ -75,6 +74,7 @@ export function AuthButton({ compact = false }) {
           variant="outline"
           onClick={() => setOpen(true)}
           fullWidth
+          style={{ cursor: "pointer" }}
         >
           Sign in
         </Button>
