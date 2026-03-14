@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectModal } from "@/components/projects/ProjectModal";
+import { ImportModal } from "@/components/projects/ImportModal";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/hooks/useAppStore";
 import { AuthButton } from "@/components/auth/AuthButton";
@@ -18,6 +19,7 @@ export function Sidebar() {
   const { projects, phases, tasks } = state;
 
   const [createModal, setCreateModal] = useState(false);
+  const [importModal, setImportModal] = useState(false);
   const [editingProj, setEditingProj] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -177,6 +179,16 @@ export function Sidebar() {
               >
                 New Project
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                fullWidth
+                icon="↓"
+                onClick={() => setImportModal(true)}
+                style={{ cursor: "pointer", marginTop: 4 }}
+              >
+                Import JSON
+              </Button>
             </div>
           </>
         )}
@@ -261,6 +273,9 @@ export function Sidebar() {
           onSave={handleSaveProject}
           onClose={() => setEditingProj(null)}
         />
+      )}
+      {importModal && (
+        <ImportModal onClose={() => setImportModal(false)} />
       )}
     </>
   );

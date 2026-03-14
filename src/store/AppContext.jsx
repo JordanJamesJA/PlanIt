@@ -171,6 +171,10 @@ export function AppProvider({ children }) {
     dispatch({ type: Actions.BULK_UPDATE_STATUS, payload: { ids, status } });
   }, []);
 
+  const importProject = useCallback((payload) => {
+    dispatch({ type: Actions.IMPORT_PROJECT, payload });
+  }, []);
+
   // ── Derived selectors ─────────────────────────────────────────────────────
   const activeProject =
     state.projects.find((p) => p.id === state.activeProjectId) ?? null;
@@ -213,6 +217,7 @@ export function AppProvider({ children }) {
     deleteTask,
     updateTaskStatus,
     bulkUpdateStatus,
+    importProject,
   };
 
   if (!loaded) return null;
