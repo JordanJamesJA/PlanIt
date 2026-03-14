@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectModal } from "@/components/projects/ProjectModal";
 import { ImportModal } from "@/components/projects/ImportModal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { Button } from "@/components/ui/Button";
 import { useAppStore } from "@/hooks/useAppStore";
 import { AuthButton } from "@/components/auth/AuthButton";
@@ -21,6 +22,7 @@ export function Sidebar() {
   const [createModal, setCreateModal] = useState(false);
   const [importModal, setImportModal] = useState(false);
   const [editingProj, setEditingProj] = useState(null);
+  const [deletingProj, setDeletingProj] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
 
   function handleSaveProject(data) {
@@ -29,9 +31,10 @@ export function Sidebar() {
     setEditingProj(null);
   }
 
-  function handleDeleteProject(project) {
-    if (window.confirm(`Delete "${project.name}" and all its data?`)) {
-      deleteProject(project.id);
+  function confirmDeleteProject() {
+    if (deletingProj) {
+      deleteProject(deletingProj.id);
+      setDeletingProj(null);
     }
   }
 
@@ -152,7 +155,7 @@ export function Sidebar() {
                     active={activeProject?.id === project.id}
                     onClick={() => setActiveProject(project.id)}
                     onEdit={() => setEditingProj(project)}
-                    onDelete={() => handleDeleteProject(project)}
+                    onDelete={() => setDeletingProj(project)}
                   />
                 ))
               )}
@@ -276,6 +279,15 @@ export function Sidebar() {
       )}
       {importModal && (
         <ImportModal onClose={() => setImportModal(false)} />
+      )}
+      {deletingProj && (
+        <ConfirmModal
+          title="Delete project"
+          message={`"${deletingProj.name}" and all its phases and tasks will be permanently deleted.`}
+          confirmLabel="Delete project"
+          onConfirm={confirmDeleteProject}
+          onCancel={() => setDeletingProj(null)}
+        />
       )}
     </>
   );

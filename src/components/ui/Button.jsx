@@ -10,7 +10,7 @@ import React from 'react';
  * @prop {boolean} loading
  * @prop {boolean} fullWidth
  */
-export function Button({
+export const Button = React.forwardRef(function Button({
   variant = 'secondary',
   size = 'md',
   icon,
@@ -23,11 +23,12 @@ export function Button({
   children,
   style,
   className = '',
-}) {
+}, ref) {
   const isDisabled = disabled || loading;
 
   return (
     <button
+      ref={ref}
       type={type}
       onClick={onClick}
       disabled={isDisabled}
@@ -53,7 +54,7 @@ export function Button({
       )}
     </button>
   );
-}
+});
 
 const SIZE_STYLES = {
   sm: { fontSize: 12, padding: '4px 10px', height: 28 },
