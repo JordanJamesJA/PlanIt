@@ -72,7 +72,7 @@ export function ProjectCard({ project, phases, tasks, active, onClick, onEdit, o
         {/* Actions — shown on hover */}
         <div
           className="card-actions"
-          style={{ display: 'flex', gap: 4, opacity: 0, transition: 'opacity var(--ease)' }}
+          style={{ display: 'flex', gap: 4, transition: 'opacity var(--ease)' }}
           onClick={e => e.stopPropagation()}
         >
           <ActionBtn onClick={onEdit}   title="Edit">✎</ActionBtn>
