@@ -17,6 +17,9 @@ export const Actions = {
   DELETE_PHASE:        'DELETE_PHASE',
   REORDER_PHASES:      'REORDER_PHASES',
 
+  // Import
+  IMPORT_PROJECT:      'IMPORT_PROJECT',
+
   // Tasks
   CREATE_TASK:         'CREATE_TASK',
   UPDATE_TASK:         'UPDATE_TASK',
@@ -96,6 +99,20 @@ export function reducer(state, action) {
         phases:          state.phases.filter(p => p.projectId !== id),
         tasks:           state.tasks.filter(t => !phaseIds.includes(t.phaseId)),
         activeProjectId: state.activeProjectId === id ? null : state.activeProjectId,
+      };
+    }
+
+    // ── Import ─────────────────────────────────────────────────────────────── //
+
+    case Actions.IMPORT_PROJECT: {
+      // payload: { project, phases, tasks } — pre-built by buildImportPayload
+      const { project, phases: newPhases, tasks: newTasks } = action.payload;
+      return {
+        ...state,
+        projects: [...state.projects, project],
+        phases:   [...state.phases, ...newPhases],
+        tasks:    [...state.tasks, ...newTasks],
+        activeProjectId: project.id,
       };
     }
 
