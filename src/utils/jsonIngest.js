@@ -129,6 +129,16 @@ function normalizeTags(val) {
   return [];
 }
 
+function arrayLooksLikeTasks(arr) {
+  if (!Array.isArray(arr) || arr.length === 0) return false;
+
+  return arr.some(item => {
+    if (typeof item === 'string') return true;
+    if (typeof item !== 'object' || item === null) return false;
+    return Boolean(extractTitle(item).title);
+  });
+}
+
 // ─── Extract metadata from an object ──────────────────────────────────────────
 function extractMeta(obj) {
   const meta = {};
@@ -325,6 +335,14 @@ export function parseJsonToTasks(jsonInput) {
       // Direct task array at top-level key
       if (Array.isArray(val) && (TASK_KEYS.has(k) || k === 'data')) {
         processArray(val, `${sourcePath}.${key}`);
+        foundGroups = true;
+        continue;
+      }
+
+      // Top-level arrays under custom keys are typically categories/phases.
+      // Example: { "Design": [...], "Build": [...] }
+      if (Array.isArray(val) && arrayLooksLikeTasks(val)) {
+        processArray(val, `${sourcePath}.${key}`, key);
         foundGroups = true;
         continue;
       }
