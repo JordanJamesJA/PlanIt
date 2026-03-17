@@ -1,6 +1,5 @@
 import { ProgressBar }  from '@/components/ui/ProgressBar';
 import { Button }        from '@/components/ui/Button';
-import { calcStats }     from '@/utils/stats';
 import { STATUS_CONFIG, PRIORITY_CONFIG } from '@/constants/config';
 
 /**
@@ -12,19 +11,21 @@ import { STATUS_CONFIG, PRIORITY_CONFIG } from '@/constants/config';
  * @prop {(f) => void} setFilters
  * @prop {() => void} onAddPhase
  * @prop {() => void} onEditProject
+ * @prop {() => void} onOpenAiSuggestions
+ * @prop {boolean} isMobile
  */
-export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, onEditProject }) {
+export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, onEditProject, onOpenAiSuggestions, isMobile = false }) {
   const hasFilter = filters.search || filters.status !== 'all' || filters.priority !== 'all';
 
   return (
     <div style={{
       borderBottom: '1px solid var(--border)',
-      padding:      '16px 24px',
+      padding:      isMobile ? '12px' : '16px 24px',
       background:   'var(--surface)',
       flexShrink:   0,
     }}>
       {/* Project title row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 12, marginBottom: 12, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
         <div style={{
           width: 36, height: 36,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -68,7 +69,7 @@ export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, o
         </div>
 
         {/* Global stats */}
-        <div style={{ display: 'flex', gap: 16, flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 12, flexShrink: 0, width: isMobile ? '100%' : 'auto', justifyContent: isMobile ? 'space-between' : 'flex-start' }}>
           <StatPill label="Total"    value={stats.total}      color="var(--text-2)"   />
           <StatPill label="Done"     value={stats.done}       color="var(--success)"  />
           <StatPill label="Active"   value={stats.inProgress} color="var(--accent)"   />
@@ -91,7 +92,7 @@ export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, o
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
 
         {/* Search */}
-        <div style={{ position: 'relative', flexShrink: 0 }}>
+        <div style={{ position: 'relative', flexShrink: 0, width: isMobile ? '100%' : 'auto' }}>
           <span style={{
             position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)',
             color: 'var(--text-3)', fontSize: 13, pointerEvents: 'none',
@@ -111,14 +112,14 @@ export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, o
               fontSize:     13,
               padding:      '6px 10px 6px 30px',
               outline:      'none',
-              width:        180,
+              width:        isMobile ? '100%' : 180,
               transition:   'border-color var(--ease)',
             }}
           />
         </div>
 
         {/* Status filter */}
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', width: isMobile ? '100%' : 'auto' }}>
           {['all', ...Object.keys(STATUS_CONFIG)].map(s => (
             <FilterChip
               key={s}
@@ -132,7 +133,7 @@ export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, o
         </div>
 
         {/* Priority filter */}
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', width: isMobile ? '100%' : 'auto' }}>
           {['all', ...Object.keys(PRIORITY_CONFIG)].map(p => (
             <FilterChip
               key={p}
@@ -161,7 +162,11 @@ export function BoardHeader({ project, stats, filters, setFilters, onAddPhase, o
         )}
 
         {/* Spacer */}
-        <div style={{ flex: 1 }} />
+        <div style={{ flex: 1, minWidth: isMobile ? '100%' : 'auto' }} />
+
+        <Button variant="secondary" size="sm" icon="✦" onClick={onOpenAiSuggestions}>
+          AI Suggestions
+        </Button>
 
         {/* Add Phase */}
         <Button variant="primary" size="sm" icon="+" onClick={onAddPhase}>

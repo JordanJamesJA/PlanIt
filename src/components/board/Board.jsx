@@ -4,8 +4,10 @@ import { PhaseSection } from './PhaseSection';
 import { TaskModal }    from '@/components/task/TaskModal';
 import { PhaseModal }   from '@/components/phase/PhaseModal';
 import { ProjectModal } from '@/components/projects/ProjectModal';
+import { AiSuggestionsModal } from './AiSuggestionsModal';
 import { calcStats }    from '@/utils/stats';
 import { useAppStore }  from '@/hooks/useAppStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 /**
  * Board
@@ -29,6 +31,8 @@ export function Board() {
   const [taskModal,    setTaskModal]    = useState(null);  // null | { task, phaseId }
   const [phaseModal,   setPhaseModal]   = useState(null);  // null | { phase }
   const [projectModal, setProjectModal] = useState(false);
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const isMobile = useIsMobile(960);
 
   if (!activeProject) return null;
 
@@ -63,13 +67,15 @@ export function Board() {
         setFilters={setFilters}
         onAddPhase={() => setPhaseModal({ phase: null })}
         onEditProject={() => setProjectModal(true)}
+        onOpenAiSuggestions={() => setAiModalOpen(true)}
+        isMobile={isMobile}
       />
 
       {/* ── Phase list ──────────────────────────────────────────────── */}
       <div style={{
         flex:      1,
         overflowY: 'auto',
-        padding:   '20px 24px',
+        padding:   isMobile ? '12px' : '20px 24px',
         display:   'flex',
         flexDirection: 'column',
         gap:       12,
@@ -127,6 +133,16 @@ export function Board() {
           project={activeProject}
           onSave={handleSaveProject}
           onClose={() => setProjectModal(false)}
+        />
+      )}
+
+      {aiModalOpen && (
+        <AiSuggestionsModal
+          project={activeProject}
+          phases={activePhases}
+          tasks={activeTasks}
+          onApplyTask={createTask}
+          onClose={() => setAiModalOpen(false)}
         />
       )}
     </div>
