@@ -36,13 +36,13 @@ export function Modal({ title, size = 'md', onClose, footer, children }) {
       onClick={e => {
         if (e.target === overlayRef.current) onClose?.();
       }}
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-5 backdrop-blur-[4px] animate-fade-in"
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-6 md:p-8 backdrop-blur-[4px] animate-fade-in"
     >
       <div
         className="animate-scale-in flex max-h-[calc(100vh-40px)] w-full flex-col overflow-hidden rounded-[var(--r-xl)] border border-[var(--border-mid)] bg-[var(--elevated)] shadow-[var(--shadow-lg)]"
         style={{ maxWidth: width }}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-[var(--border)] px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-[var(--border)] px-6 py-5">
           <h3 className="font-[var(--font-display)] text-[17px] text-[var(--text)]">{title}</h3>
           <button
             onClick={onClose}
@@ -52,10 +52,10 @@ export function Modal({ title, size = 'md', onClose, footer, children }) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5">{children}</div>
+        <div className="flex-1 overflow-y-auto p-6 md:p-7">{children}</div>
 
         {footer && (
-          <div className="flex shrink-0 justify-end gap-2 border-t border-[var(--border)] px-5 py-3.5">
+          <div className="flex shrink-0 justify-end gap-2 border-t border-[var(--border)] px-6 py-4">
             {footer}
           </div>
         )}

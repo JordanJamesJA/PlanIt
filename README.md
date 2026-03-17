@@ -55,3 +55,30 @@ Phase    { id, projectId, name, description, order }
 Task     { id, phaseId, projectId, title, description, status, priority,
            assignee, dueDate, tags[], references[], createdAt, updatedAt }
 ```
+
+
+## AI Assistant (OpenRouter via Supabase Edge Functions)
+
+PlanIt now includes an AI Suggestions flow in the board header. It sends project context to a Supabase Edge Function, which calls OpenRouter server-side.
+
+- Frontend entry point: `src/components/board/AiSuggestionsModal.jsx`
+- Frontend service wrapper: `src/services/aiService.js`
+- Backend function template: `supabase/functions/ai-assistant/index.ts`
+
+### Setup
+
+1. Deploy the edge function:
+
+```bash
+supabase functions deploy ai-assistant
+```
+
+2. Add the secret:
+
+```bash
+supabase secrets set OPENROUTER_API_KEY=your_key_here
+```
+
+3. In the app, open a project board and click **AI Suggestions**.
+
+Implementation notes and rollout details are in `docs/ai-service-openrouter.md`.
